@@ -5,8 +5,9 @@ from langchain_ollama import ChatOllama
 from typing import Callable, Optional, List
 from langchain_anthropic import ChatAnthropic
 from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_xai import ChatXAI
 from langchain_core.callbacks.base import BaseCallbackHandler
-from config import OLLAMA_BASE_URL, OPENROUTER_BASE_URL, OPENROUTER_API_KEY, GOOGLE_API_KEY
+from config import OLLAMA_BASE_URL, OPENROUTER_BASE_URL, OPENROUTER_API_KEY, GOOGLE_API_KEY, XAI_API_KEY
 
 
 class BufferedStreamingHandler(BaseCallbackHandler):
@@ -45,6 +46,59 @@ _common_llm_params = {
 # Map input model choices (lowercased) to their configuration
 # Each config includes the class and any model-specific constructor parameters
 _llm_config_map = {
+    # xAI Grok Models (Native API) - Primary models
+    'grok-beta': {
+        'class': ChatXAI,
+        'constructor_params': {'model': 'grok-beta', 'xai_api_key': XAI_API_KEY}
+    },
+    'grok-2-1212': {
+        'class': ChatXAI,
+        'constructor_params': {'model': 'grok-2-1212', 'xai_api_key': XAI_API_KEY}
+    },
+    'grok-2-vision-1212': {
+        'class': ChatXAI,
+        'constructor_params': {'model': 'grok-2-vision-1212', 'xai_api_key': XAI_API_KEY}
+    },
+    # OpenRouter alternatives for Grok
+    'grok-4.1-fast-openrouter': {
+        'class': ChatOpenAI,
+        'constructor_params': {
+            'model_name': 'x-ai/grok-4.1-fast',
+            'base_url': OPENROUTER_BASE_URL,
+            'api_key': OPENROUTER_API_KEY
+        }
+    },
+    # Claude Models
+    'claude-sonnet-4-5': {
+        'class': ChatAnthropic,
+        'constructor_params': {'model': 'claude-sonnet-4-5'}
+    },
+    'claude-sonnet-4-0': {
+        'class': ChatAnthropic,
+        'constructor_params': {'model': 'claude-sonnet-4-0'}
+    },
+    'claude-sonnet-4.5-openrouter': {
+        'class': ChatOpenAI,
+        'constructor_params': {
+            'model_name': 'anthropic/claude-sonnet-4.5',
+            'base_url': OPENROUTER_BASE_URL,
+            'api_key': OPENROUTER_API_KEY
+        }
+    },
+    # Google Gemini Models
+    'gemini-2.5-flash': {
+        'class': ChatGoogleGenerativeAI,
+        'constructor_params': {'model': 'gemini-2.5-flash', 'google_api_key': GOOGLE_API_KEY }
+    },
+    'gemini-2.5-flash-lite': {
+        'class': ChatGoogleGenerativeAI,
+        'constructor_params': {'model': 'gemini-2.5-flash-lite', 'google_api_key': GOOGLE_API_KEY}
+    },
+    'gemini-2.5-pro': {
+        'class': ChatGoogleGenerativeAI,
+        'constructor_params': {'model': 'gemini-2.5-pro', 'google_api_key': GOOGLE_API_KEY}
+    },
+    # OpenAI GPT Models (kept for backward compatibility but deprioritized)
     'gpt-4.1': {
         'class': ChatOpenAI,
         'constructor_params': {'model_name': 'gpt-4.1'} 
@@ -61,32 +115,12 @@ _llm_config_map = {
         'class': ChatOpenAI,
         'constructor_params': {'model_name': 'gpt-5-nano'} 
     },
-    'claude-sonnet-4-5': {
-        'class': ChatAnthropic,
-        'constructor_params': {'model': 'claude-sonnet-4-5'}
-    },
-    'claude-sonnet-4-0': {
-        'class': ChatAnthropic,
-        'constructor_params': {'model': 'claude-sonnet-4-0'}
-    },
-    'gemini-2.5-flash': {
-        'class': ChatGoogleGenerativeAI,
-        'constructor_params': {'model': 'gemini-2.5-flash', 'google_api_key': GOOGLE_API_KEY }
-    },
-    'gemini-2.5-flash-lite': {
-        'class': ChatGoogleGenerativeAI,
-        'constructor_params': {'model': 'gemini-2.5-flash-lite', 'google_api_key': GOOGLE_API_KEY}
-    },
-    'gemini-2.5-pro': {
-        'class': ChatGoogleGenerativeAI,
-        'constructor_params': {'model': 'gemini-2.5-pro', 'google_api_key': GOOGLE_API_KEY}
-    },
     'gpt-5.1-openrouter': {
         'class': ChatOpenAI,
         'constructor_params': {
             'model_name': 'openai/gpt-5.1',
             'base_url': OPENROUTER_BASE_URL,
-            'api_key': OPENROUTER_API_KEY  # Use OpenRouter API key
+            'api_key': OPENROUTER_API_KEY
         }
     },
     'gpt-5-mini-openrouter': {
@@ -94,25 +128,10 @@ _llm_config_map = {
         'constructor_params': {
             'model_name': 'openai/gpt-5-mini',
             'base_url': OPENROUTER_BASE_URL,
-            'api_key': OPENROUTER_API_KEY  # Use OpenRouter API key
+            'api_key': OPENROUTER_API_KEY
         }
     },
-    'claude-sonnet-4.5-openrouter': {
-        'class': ChatOpenAI,
-        'constructor_params': {
-            'model_name': 'anthropic/claude-sonnet-4.5',
-            'base_url': OPENROUTER_BASE_URL,
-            'api_key': OPENROUTER_API_KEY  # Use OpenRouter API key
-        }
-    },
-    'grok-4.1-fast-openrouter': {
-        'class': ChatOpenAI,
-        'constructor_params': {
-            'model_name': 'x-ai/grok-4.1-fast',
-            'base_url': OPENROUTER_BASE_URL,
-            'api_key': OPENROUTER_API_KEY  # Use OpenRouter API key
-        }
-    },
+    # Ollama Models (commented out by default)
     # 'llama3.2': {
     #     'class': ChatOllama,
     #     'constructor_params': {'model': 'llama3.2:latest', 'base_url': OLLAMA_BASE_URL}

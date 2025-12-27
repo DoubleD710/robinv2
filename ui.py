@@ -61,7 +61,7 @@ st.sidebar.subheader("Settings")
 model_options = get_model_choices()
 default_model_index = (
     next(
-        (idx for idx, name in enumerate(model_options) if name.lower() == "gpt4o"),
+        (idx for idx, name in enumerate(model_options) if name.lower() == "grok-beta"),
         0,
     )
     if model_options
@@ -73,7 +73,7 @@ model = st.sidebar.selectbox(
     index=default_model_index,
     key="model_select",
 )
-if any(name not in {"gpt4o", "gpt-4.1", "claude-3-5-sonnet-latest", "llama3.1", "gemini-2.5-flash"} for name in model_options):
+if any(name not in {"grok-beta", "grok-2-1212", "claude-sonnet-4-5", "gemini-2.5-flash"} for name in model_options):
     st.sidebar.caption("Locally detected Ollama models are automatically added to this list.")
 threads = st.sidebar.slider("Scraping Threads", 1, 16, 4, key="thread_slider")
 
