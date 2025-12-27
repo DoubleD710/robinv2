@@ -21,10 +21,10 @@ def robin():
 @click.option(
     "--model",
     "-m",
-    default="gpt-5-mini",
+    default="grok-beta",
     show_default=True,
     type=click.Choice(MODEL_CHOICES),
-    help="Select LLM model to use (e.g., gpt4o, claude sonnet 3.5, ollama models)",
+    help="Select LLM model to use (e.g., grok-beta, claude sonnet 4.5, ollama models)",
 )
 @click.option("--query", "-q", required=True, type=str, help="Dark web search query")
 @click.option(
@@ -44,8 +44,8 @@ def robin():
 def cli(model, query, threads, output):
     """Run Robin in CLI mode.\n
     Example commands:\n
-    - robin -m gpt4o -q "ransomware payments" -t 12\n
-    - robin --model claude-3-5-sonnet-latest --query "sensitive credentials exposure" --threads 8 --output filename\n
+    - robin -m grok-beta -q "ransomware payments" -t 12\n
+    - robin --model claude-sonnet-4-5 --query "sensitive credentials exposure" --threads 8 --output filename\n
     - robin -m llama3.1 -q "zero days"\n
     """
     llm = get_llm(model)

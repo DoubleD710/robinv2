@@ -16,7 +16,9 @@
 ## Features
 
 - ⚙️ **Modular Architecture** – Clean separation between search, scrape, and LLM workflows.
-- 🤖 **Multi-Model Support** – Easily switch between OpenAI, Claude, Gemini or local models like Ollama.
+- 🤖 **Multi-Model Support** – Easily switch between xAI Grok, Claude, Gemini, OpenAI, or local models like Ollama.
+- 🧠 **xAI Grok Integration** – Native support for Grok models with reasoning and advanced features.
+- 🔌 **MCP Support** – Model Context Protocol ready for remote server integration.
 - 💻 **CLI-First Design** – Built for terminal warriors and automation ninjas.
 - 🐳 **Docker-Ready** – Optional Docker deployment for clean, isolated usage.
 - 📝 **Custom Reporting** – Save investigation output to file for reporting or further analysis.
@@ -36,7 +38,9 @@
 > The tool needs Tor to do the searches. You can install Tor using `apt install tor` on Linux/Windows(WSL) or `brew install tor` on Mac. Once installed, confirm if Tor is running in the background.
 
 > [!TIP]
-> You can provide OpenAI or Anthropic or Google API key by either creating .env file (refer to sample env file in the repo) or by setting env variables in PATH.
+> You can provide xAI, Anthropic, Google, or OpenAI API key by either creating .env file (refer to sample env file in the repo) or by setting env variables in PATH.
+>
+> For xAI Grok (recommended), set `XAI_API_KEY` environment variable with your xAI API key from console.x.ai.
 >
 > For Ollama, provide `http://host.docker.internal:11434` as `OLLAMA_BASE_URL` in your env if running using docker method or `http://127.0.0.1:11434` for other methods. You might need to serve Ollama on 0.0.0.0 depending on your OS. You can do by running `OLLAMA_HOST=0.0.0.0 ollama serve &` in your terminal.
 
@@ -66,7 +70,7 @@ chmod +x robin
 
 - Run the binary as:
 ```bash
-robin cli --model gpt-4.1 --query "ransomware payments"
+robin cli --model grok-beta --query "ransomware payments"
 ```
 
 ### Using Python (Development Version)
@@ -75,7 +79,7 @@ robin cli --model gpt-4.1 --query "ransomware payments"
 
 ```bash
 pip install -r requirements.txt
-python main.py cli -m gpt-4.1 -q "ransomware payments" -t 12
+python main.py cli -m grok-beta -q "ransomware payments" -t 12
 ```
 
 ---
@@ -87,8 +91,8 @@ Robin: AI-Powered Dark Web OSINT Tool
 
 options:
   -h, --help            show this help message and exit
-  --model {gpt4o,gpt-4.1,claude-3-5-sonnet-latest,llama3.1,gemini-2.5-flash}, -m {gpt4o,gpt-4.1,claude-3-5-sonnet-latest,llama3.1,gemini-2.5-flash}
-                        Select LLM model (e.g., gpt4o, claude sonnet 3.5, ollama models, gemini 2.5 flash)
+  --model {grok-beta,grok-2-1212,grok-2-vision-1212,claude-sonnet-4-5,gemini-2.5-flash}, -m {grok-beta,grok-2-1212,grok-2-vision-1212,claude-sonnet-4-5,gemini-2.5-flash}
+                        Select LLM model (e.g., grok-beta, claude sonnet 4.5, ollama models, gemini 2.5 flash)
   --query QUERY, -q QUERY
                         Dark web search query
   --threads THREADS, -t THREADS
@@ -98,11 +102,24 @@ options:
                         current date and time is used.
 
 Example commands:
- - robin -m gpt4.1 -q "ransomware payments" -t 12
- - robin --model gpt4.1 --query "sensitive credentials exposure" --threads 8 --output filename
+ - robin -m grok-beta -q "ransomware payments" -t 12
+ - robin --model grok-2-1212 --query "sensitive credentials exposure" --threads 8 --output filename
  - robin -m llama3.1 -q "zero days"
  - robin -m gemini-2.5-flash -q "zero days"
 ```
+
+---
+
+## Advanced Features
+
+### MCP (Model Context Protocol) Integration
+
+Robin includes support for the Model Context Protocol, enabling advanced integrations with remote servers and external tools. See [MCP_INTEGRATION.md](MCP_INTEGRATION.md) for detailed documentation on:
+
+- Setting up MCP remote servers
+- Tool calling and function integration
+- Advanced xAI Grok features
+- Security best practices
 
 ---
 
