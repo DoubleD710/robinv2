@@ -110,6 +110,19 @@ Example commands:
 
 ---
 
+## Advanced Features
+
+### MCP (Model Context Protocol) Integration
+
+Robin includes support for the Model Context Protocol, enabling advanced integrations with remote servers and external tools. See [MCP_INTEGRATION.md](MCP_INTEGRATION.md) for detailed documentation on:
+
+- Setting up MCP remote servers
+- Tool calling and function integration
+- Advanced xAI Grok features
+- Security best practices
+
+---
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request if you have major feature updates.
